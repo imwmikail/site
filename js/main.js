@@ -16,13 +16,16 @@ class Carousel {
         this.addEventListeners();
     }
     
-    loadSlides() {
-        for (let i = 1; i <= 12; i++) {
-            this.slides.push(`assets/${i}.jpg`);
-        }
-
-        this.slides.sort(() => Math.random() - 0.5);
+loadSlides() {
+    for (let i = 1; i <= 12; i++) {
+        this.slides.push(`assets/${i}.jpg`);
     }
+
+    for (let i = this.slides.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [this.slides[i], this.slides[j]] = [this.slides[j], this.slides[i]];
+    }
+}
     
     createSlides() {
         const slidesContainer = document.querySelector('.carousel-slides');
