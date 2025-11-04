@@ -17,9 +17,11 @@ class Carousel {
     }
     
     loadSlides() {
-        for (let i = 1; i <= 8; i++) {
+        for (let i = 1; i <= 12; i++) {
             this.slides.push(`assets/${i}.jpg`);
         }
+
+        this.slides.sort(() => Math.random() - 0.5);
     }
     
     createSlides() {
