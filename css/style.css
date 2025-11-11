@@ -1346,15 +1346,15 @@ footer {
 }
 
 .testimonial-card:hover {
-    transform: translateY(-10px) scale(1.03); /* levanta e dá leve zoom */
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* sombra mais intensa */
-    border-left-color: #3b82f6; /* muda a cor da borda para destaque */
+    transform: translateY(-10px) scale(1.03); 
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); 
+    border-left-color: #3b82f6; 
 }
 
 
 .testimonial-content {
     margin-bottom: 2rem;
-    flex-grow: 1; /* Ocupa o espaço disponível */
+    flex-grow: 1;
 }
 
 .testimonial-content p {
@@ -1379,7 +1379,7 @@ footer {
 .testimonial-author {
     border-top: 1px solid var(--light-gray);
     padding-top: 1.5rem;
-    margin-top: auto; /* Isso empurra o autor para o final */
+    margin-top: auto; 
 }
 
 .testimonial-author strong {
@@ -1395,7 +1395,6 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Animações Específicas para Batismos */
 @keyframes waterRipple {
     0% {
         transform: scale(1);
@@ -1415,7 +1414,6 @@ footer {
     animation: waterRipple 3s ease-in-out infinite;
 }
 
-/* Responsividade para Batismos */
 @media (max-width: 768px) {
     .baptism-hero-content h2 {
         font-size: 2.8rem;
@@ -1482,7 +1480,6 @@ footer {
         padding: 2rem 1.5rem;
     }
 }
-/* Seção da Galeria */
 .gallery-section {
     padding: 5rem 0;
     background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
@@ -1506,7 +1503,6 @@ footer {
     line-height: 1.7;
 }
 
-/* Viewer Principal da Galeria */
 .gallery-main {
     max-width: 1200px;
     margin: 0 auto 6rem;
@@ -1581,7 +1577,6 @@ footer {
     font-size: 1.2rem;
 }
 
-/* Controles da Galeria */
 .gallery-prev,
 .gallery-next {
     position: absolute;
@@ -1616,9 +1611,6 @@ footer {
     transform: translateY(-50%) scale(1.1);
 }
 
-/* Miniaturas */
-
-/* Grid de Fotos Adicionais */
 .gallery-grid-section {
     margin-top: 4rem;
 }
@@ -1683,7 +1675,6 @@ footer {
     font-weight: 600;
 }
 
-/* Animações para Galeria */
 @keyframes slideInFromRight {
     from {
         opacity: 0;
@@ -1714,7 +1705,6 @@ footer {
     animation: slideInFromLeft 0.8s ease-out;
 }
 
-/* Responsividade da Galeria */
 @media (max-width: 768px) {
     .gallery-slides {
         height: 400px;
@@ -1806,15 +1796,11 @@ footer {
   border-color: var(--dark-blue);
 }
 
-/* Responsividade */
 @media (max-width: 600px) {
   .video-wrapper iframe {
     height: 250px;
   }
 }
-/* ======================
-   Seção de Vídeo - IMW
-   ====================== */
 
 .video-section {
   padding: 40px 0 10px;
@@ -1852,7 +1838,6 @@ footer {
   border: none;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
   .video-section .hero-title {
     font-size: 2rem;
@@ -1869,18 +1854,16 @@ footer {
   }
 }
 
-/* Celulares grandes (até 768px) */
 @media (max-width: 768px) {
   .schedule-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 }
 
-/* Celulares pequenos (até 480px) */
 @media (max-width: 480px) {
   .schedule-grid {
-    grid-template-columns: 1fr; /* só 1 coluna */
+    grid-template-columns: 1fr;
     gap: 0.8rem;
   }
 }
