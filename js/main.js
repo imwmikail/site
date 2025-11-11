@@ -359,3 +359,200 @@ window.addEventListener('resize', debounce(() => {
 }, 250));
 
 adjustHeroHeight();
+class Gallery {
+    constructor() {
+        this.slides = document.querySelectorAll('.gallery-slide');
+        this.prevBtn = document.querySelector('.gallery-prev');
+        this.nextBtn = document.querySelector('.gallery-next');
+        this.currentIndex = 0;
+        this.autoPlayInterval = null;
+        this.autoPlayDelay = 3000;
+        this.isAnimating = false;
+        
+        this.init();
+    }
+    
+    init() {
+        this.showSlide(0);
+        this.addEventListeners();
+        this.startAutoPlay();
+    }
+    
+    showSlide(index) {
+        if (this.isAnimating) return;
+        
+        this.isAnimating = true;
+        
+        this.slides.forEach(slide => {
+            slide.classList.remove('active', 'next', 'prev');
+        });
+        
+        const oldIndex = this.currentIndex;
+        this.currentIndex = index;
+        
+        const direction = index > oldIndex ? 'next' : 'prev';
+        this.slides[this.currentIndex].classList.add(direction);
+        
+        setTimeout(() => {
+            this.slides[this.currentIndex].classList.add('active');
+            this.slides[this.currentIndex].classList.remove('next', 'prev');
+            this.isAnimating = false;
+        }, 50);
+    }
+    
+    nextSlide() {
+        if (this.isAnimating) return;
+        
+        const nextIndex = (this.currentIndex + 1) % this.slides.length;
+        this.showSlide(nextIndex);
+        this.restartAutoPlay();
+    }
+    
+    prevSlide() {
+        if (this.isAnimating) return;
+        
+        const prevIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
+        this.showSlide(prevIndex);
+        this.restartAutoPlay();
+    }
+    
+    startAutoPlay() {
+        this.autoPlayInterval = setInterval(() => {
+            this.nextSlide();
+        }, this.autoPlayDelay);
+    }
+    
+    stopAutoPlay() {
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+            this.autoPlayInterval = null;
+        }
+    }
+    
+    restartAutoPlay() {
+        this.stopAutoPlay();
+        this.startAutoPlay();
+    }
+    
+    addEventListeners() {
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', () => this.nextSlide());
+        }
+        
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', () => this.prevSlide());
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                this.nextSlide();
+            }
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                this.prevSlide();
+            }
+        });
+        
+        const galleryViewer = document.querySelector('.gallery-viewer');
+        if (galleryViewer) {
+            galleryViewer.addEventListener('mouseenter', () => this.stopAutoPlay());
+            galleryViewer.addEventListener('mouseleave', () => this.startAutoPlay());
+        }
+        
+        this.addSwipeSupport();
+        
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.stopAutoPlay();
+            } else {
+                this.startAutoPlay();
+            }
+        });
+    }
+    
+    addSwipeSupport() {
+        const viewer = document.querySelector('.gallery-viewer');
+        if (!viewer) return;
+        
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let touchStartY = 0;
+        let touchEndY = 0;
+        
+        viewer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+        
+        viewer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            this.handleSwipe(touchStartX, touchEndX, touchStartY, touchEndY);
+        }, { passive: true });
+    }
+    
+    handleSwipe(startX, endX, startY, endY) {
+        const swipeThreshold = 50;
+        const swipeDistanceX = startX - endX;
+        const swipeDistanceY = startY - endY;
+        
+        if (Math.abs(swipeDistanceY) > Math.abs(swipeDistanceX)) {
+            return;
+        }
+        
+        if (Math.abs(swipeDistanceX) < swipeThreshold) return;
+        
+        if (swipeDistanceX > 0) {
+            this.nextSlide();
+        } else {
+            this.prevSlide();
+        }
+    }
+    
+    goToSlide(index) {
+        if (index >= 0 && index < this.slides.length) {
+            this.showSlide(index);
+            this.restartAutoPlay();
+        }
+    }
+    
+    destroy() {
+        this.stopAutoPlay();
+        
+        if (this.nextBtn) {
+            this.nextBtn.removeEventListener('click', this.nextSlide);
+        }
+        
+        if (this.prevBtn) {
+            this.prevBtn.removeEventListener('click', this.prevSlide);
+        }
+        
+        document.removeEventListener('keydown', this.handleKeydown);
+        document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.querySelector('.gallery-slides')) {
+        window.gallery = new Gallery();
+    }
+});
+
+window.GalleryControls = {
+    next: function() {
+        if (window.gallery) window.gallery.nextSlide();
+    },
+    prev: function() {
+        if (window.gallery) window.gallery.prevSlide();
+    },
+    goTo: function(index) {
+        if (window.gallery) window.gallery.goToSlide(index);
+    },
+    play: function() {
+        if (window.gallery) window.gallery.startAutoPlay();
+    },
+    pause: function() {
+        if (window.gallery) window.gallery.stopAutoPlay();
+    }
+};
